@@ -6,5 +6,6 @@
 bool motorBegin();
 void motorSetNormalized(float command);
 void motorStop();
+float motorGetLastAppliedCommand();
 
 #endif
