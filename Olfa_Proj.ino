@@ -6,7 +6,7 @@ static PidBlock sBalancePid;
 static const float TARGET_ANGLE_DEG = 0.0f;
 static const float MOTOR_POLARITY = -1.0f;
 static const float FALL_ANGLE_LIMIT_DEG = 45.0f;
-static const float UPRIGHT_DEADBAND_DEG = 0.7f;
+static const float UPRIGHT_DEADBAND_DEG = 0.5f;
 static uint32_t sLastControlMicros = 0;
 static uint32_t sLastPrintMs = 0;
 
@@ -35,7 +35,7 @@ void setup() {
   bool motorOk = motorBegin();
   bool imuOk = pendulumAngleBegin();
 
-  pidInit(sBalancePid, 0.6f, 0.15f, 0.0f, -1.0f, 1.0f);
+  pidInit(sBalancePid, 0.7f, 0.05f, 0.0f, -1.0f, 1.0f);
   pidSetIntegratorLimits(sBalancePid, -0.4f, 0.4f);
   sLastControlMicros = micros();
 
