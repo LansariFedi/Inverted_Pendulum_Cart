@@ -161,6 +161,6 @@ bool pendulumAngleWork(float &thetaDeg) {
     sThetaDeg = ALPHA * (sThetaDeg + omega * dt) + (1.0f - ALPHA) * thetaAcc;
   }
 
-  thetaDeg = sThetaDeg;
+  thetaDeg = sThetaDeg - 3;
   return true;
 }
