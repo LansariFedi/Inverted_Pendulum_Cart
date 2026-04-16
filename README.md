@@ -15,23 +15,35 @@ Real-time balancing of an inverted pendulum using an ESP32, MPU6050 IMU, and a P
 
 ## Theory
 
-The cart-pole (inverted pendulum on cart) is a classic underactuated, unstable system. Without feedback, the upright position falls over.
+The cart-pole (inverted pendulum on a cart) is an underactuated and unstable system. Without feedback, the upright equilibrium falls.
 
-Using a standard point-mass cart-pole model (from Lagrangian mechanics), with cart position `x`, pole angle `theta`, cart force `f_x`, cart mass `m_c`, pole mass `m_p`, and pole length `l`:
+Using the standard point-mass cart-pole model (from Lagrangian mechanics), with cart position $x$, pole angle $\theta$, cart force $f_x$, cart mass $m_c$, pole mass $m_p$, and pole length $l$:
 
-```text
-(m_c + m_p) x_ddot + m_p l theta_ddot cos(theta) - m_p l theta_dot^2 sin(theta) = f_x
-l theta_ddot + x_ddot cos(theta) + g sin(theta) = 0
-```
+$$
+(m_c + m_p)\ddot{x} + m_p l\ddot{\theta}\cos\theta - m_p l\dot{\theta}^2\sin\theta = f_x
+$$
 
-In this convention, `theta = 0` is hanging down, so upright is `theta = pi`. Linearizing around upright with `phi = theta - pi` and `|phi| << 1` gives:
+$$
+l\ddot{\theta} + \ddot{x}\cos\theta + g\sin\theta = 0
+$$
 
-```text
-(m_c + m_p) x_ddot - m_p l phi_ddot = f_x
-l phi_ddot - x_ddot - g phi = 0
-```
+In this convention, $\theta = 0$ is hanging down, so upright is $\theta = \pi$. Linearizing around upright with $\phi = \theta - \pi$ and $|\phi| \ll 1$ gives:
 
-If the cart cannot move (`x_ddot = 0`), then `phi_ddot ~= (g/l) phi`: any small tilt grows, which is why active feedback is required.
+$$
+(m_c + m_p)\ddot{x} - m_p l\ddot{\phi} = f_x
+$$
+
+$$
+l\ddot{\phi} - \ddot{x} - g\phi = 0
+$$
+
+If the cart is fixed ($\ddot{x} = 0$), then:
+
+$$
+\ddot{\phi} \approx \frac{g}{l}\phi
+$$
+
+So a small tilt grows with time, which is exactly why active feedback is required.
 
 This firmware uses local stabilization around upright via PID on the estimated angle. It is not a swing-up controller.
 
